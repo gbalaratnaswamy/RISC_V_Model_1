@@ -2,9 +2,12 @@ a.out
 instr.txt
 t_coop.v
 t_main.v
-coprocessor0.v
 multiplier.v
 divider.v
+notes.txt
+cp0.v.txt
+instr2.txt
 
 *.vcd
 *.out
+

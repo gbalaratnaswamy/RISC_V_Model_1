@@ -1,4 +1,6 @@
 `timescale 1ns / 1ps
+
+
 module programCounter (
     output reg [31:0] pc,
     output [31:0] pc4,
@@ -6,13 +8,9 @@ module programCounter (
     input [1:0] jumpSel,
     input jump,
     input clk,rst);
+
+    `include "parameters.vh"
     
-
-    parameter   PJumpPc4   = 2'b00,
-                PJumpImm   = 2'b01,
-                PJumpAlu   = 2'b10;
-
-
     assign pc4=pc+4;
 
     always @(posedge clk, negedge rst) begin

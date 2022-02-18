@@ -1,0 +1,11 @@
+===================================
+Configuration Memory information
+===================================
+File Format        BIN
+Interface          SPIX4
+Size               4M
+Start Address      0x00000000
+End Address        0x003FFFFF
+
+Addr1         Addr2         Date                    File(s)
+0x00000000    0x0021728B    Feb  7 23:29:58 2022    E:/hardware/verilog/mips2/risc_v_m1/risc_v_m1.runs/impl_1/processor.bit

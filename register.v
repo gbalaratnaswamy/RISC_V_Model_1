@@ -47,7 +47,7 @@ module Regester  (
 
         end  
         else begin  
-                if(reg_write_en) begin  
+                if(reg_write_en&&reg_write_dest) begin  
                     reg_array[reg_write_dest] <= reg_write_data;  
                 end  
         end  
