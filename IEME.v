@@ -23,7 +23,7 @@ module IEME (
     input [31:0] Rs1,
     input [4:0] Rd,
     input [1:0] WL, 
-    input clk,rst
+    input clk,rst,stall
 );
     always @(posedge clk, negedge rst) begin
         if(!rst)begin
@@ -45,22 +45,41 @@ module IEME (
             PCImmo<=0;
         end
         else begin
-            pc4o<=pc4;
-            AluOuto<=AluOut;
-            fnc3o<=fnc3;
-            // opcodeo<=opcode;
-            regesterWo <=regesterW;
-            regSrco <=regSrc;
-            memReado <=memRead;
-            memWriteo <=memWrite;
-            pcImmtoRego<=pcImmtoReg;
-            extendSigno<=extendSign;
-            jumpSelo<=jumpSel;
-            jumpOpno<=jumpOpn;
-            Rs1o<=Rs1;
-            Rdo<=Rd;
-            WLo<=WL;
-            PCImmo<=PCImm;
+            if(stall) begin
+                pc4o<=pc4o;
+                AluOuto<=AluOuto;
+                fnc3o<=fnc3o;
+                // opcodeo<=opcode;
+                regesterWo <=regesterWo;
+                regSrco <=regSrco;
+                memReado <=memReado;
+                memWriteo <=memWriteo;
+                pcImmtoRego<=pcImmtoRego;
+                extendSigno<=extendSigno;
+                jumpSelo<=jumpSelo;
+                jumpOpno<=jumpOpno;
+                Rs1o<=Rs1o;
+                Rdo<=Rdo;
+                WLo<=WLo;
+                PCImmo<=PCImmo;
+            end else begin
+                pc4o<=pc4;
+                AluOuto<=AluOut;
+                fnc3o<=fnc3;
+                // opcodeo<=opcode;
+                regesterWo <=regesterW;
+                regSrco <=regSrc;
+                memReado <=memRead;
+                memWriteo <=memWrite;
+                pcImmtoRego<=pcImmtoReg;
+                extendSigno<=extendSign;
+                jumpSelo<=jumpSel;
+                jumpOpno<=jumpOpn;
+                Rs1o<=Rs1;
+                Rdo<=Rd;
+                WLo<=WL;
+                PCImmo<=PCImm;
+            end
         end
     end
 endmodule

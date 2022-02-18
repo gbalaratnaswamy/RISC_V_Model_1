@@ -55,17 +55,18 @@ module processor (
 
     
     // stage 1
+    wire s_IFID;
 
     InstructionMem IM1(insts1,pcs1);  // stage 1
 
-    programCounter pc1(pcs1,pc4s1,AluOuts4,PCImms4,jumpSels4,jumps4,{clk&&s_IFID},rst);  // stage 1
+    programCounter pc1(pcs1,pc4s1,AluOuts4,PCImms4,jumpSels4,jumps4,clk,rst,s_IFID);  // stage 1
 
 
 
     // bubble and stall unit
-    wire b_IFID,bubs2,s_IFID;
+    wire b_IFID,bubs2;
 
-    IFID ifid1(pcs2,pc4s2,insts2,bubs2,pcs1,pc4s1,insts1,b_IFID,{clk&&s_IFID},rst);  // stage 1 - 2
+    IFID ifid1(pcs2,pc4s2,insts2,bubs2,pcs1,pc4s1,insts1,b_IFID,clk,rst,s_IFID);  // stage 1 - 2
 
     // stage 2
     wire [4:0] Rds2;
@@ -97,7 +98,7 @@ module processor (
     IDIE idie1(pcs3,pc4s3,imms3,Ras3,Rbs3,fnc3s3,regesterWs3,regSrcs3,memReads3,memWrites3,
         pcImmtoRegs3,extendSigns3,jumpSels3,jumpOpns3,AluMulSels3,Alu2opns3,aluSelects3,Rds3,Raas3,Rbas3,WLs3,
         pcs2,pc4s2,Imms2,Ras2,Rbs2,func3s2,{b_IDIE?1'b0:regesterWs2},regSrcs2,{b_IDIE?1'b0:memReads2},{b_IDIE?1'b0:memWrites2},
-        pcImmtoRegs2,extendSigns2,jumpSels2,jumpOpns2,AluMulSels2,Alu2opns2,aluSelects2,Rds2,Raas2,Rbas2,WLs2,{s_IDIE&&clk},rst); // stage 2-3
+        pcImmtoRegs2,extendSigns2,jumpSels2,jumpOpns2,AluMulSels2,Alu2opns2,aluSelects2,Rds2,Raas2,Rbas2,WLs2,clk,rst,s_IDIE); // stage 2-3
 
     // stage 3  
 
@@ -185,7 +186,7 @@ module processor (
     IEME ieme(pc4s4,AluOuts4,PCImms4,fnc3s4,regesterWs4,regSrcs4,memReads4,memWrites4,
     pcImmtoRegs4,extendSigns4,jumpSels4,jumpOpns4,Rs2s4,Rds4,WLs4,
     pc4s3,AluOuts3,PCImms3,fnc3s3,{b_IEME?1'b0:regesterWs3},regSrcs3,{b_IEME?1'b0:memReads3},{b_IEME?1'b0:memWrites3},pcImmtoRegs3,
-    extendSigns3,jumpSels3,jumpOpns3,Rs2s3,Rds3,WLs3,{s_IEME&&clk},rst);
+    extendSigns3,jumpSels3,jumpOpns3,Rs2s3,Rds3,WLs3,clk,rst,s_IEME);
 
     // stage 4
     wire [31:0] Mouts4;
@@ -210,7 +211,7 @@ module processor (
     wire b_MEWB,s_MEWB;
 
     MEWB mewb1(pc4s5,AluOuts5,PCImms5,Mouts5,regesterWs5,regSrcs5,pcImmtoRegs5,Rds5,CP0rdouts5,
-    pc4s4,AluOuts4,PCImms4,Mouts4,{b_MEWB?1'b0:regesterWs4},regSrcs4,pcImmtoRegs4,Rds4,CP0rdouts3,{s_MEWB&&clk},rst);
+    pc4s4,AluOuts4,PCImms4,Mouts4,{b_MEWB?1'b0:regesterWs4},regSrcs4,pcImmtoRegs4,Rds4,CP0rdouts3,clk,rst,s_MEWB);
 
     // stage 5
 
@@ -240,7 +241,7 @@ module processor (
     wire s_S6,regesterWs6;
     wire [31:0]AluOuts6;
     wire [4:0]Rds6;
-    s6_Forward fwds6( AluOuts6,Rds6,regesterWs6,AluOuts5,Rds5,{(regSrcs5==0)&&regesterWs5},{s_S6&&clk},rst);
+    s6_Forward fwds6( AluOuts6,Rds6,regesterWs6,AluOuts5,Rds5,{(regSrcs5==0)&&regesterWs5},clk,rst,s_S6);
 
 
     // stall control
@@ -268,7 +269,7 @@ module s6_Forward (
     input [31:0] AluOut,
     input [4:0] Rd,
     input regesterW,
-    input clk,rst
+    input clk,rst,stall
 );
     always @(posedge clk, negedge rst) begin
         if(!rst)begin
@@ -277,9 +278,15 @@ module s6_Forward (
             regesterWo<=0;
         end
         else begin
-            AluOuto<=AluOut;
-            Rdo<=Rd;
-            regesterWo<=1;
+            if(stall) begin
+                AluOuto<=AluOuto;
+                Rdo<=Rdo;
+                regesterWo<=regesterWo;
+            end else begin
+                AluOuto<=AluOut;
+                Rdo<=Rd;
+                regesterWo<=regesterW;
+            end
         end
     end
 endmodule
