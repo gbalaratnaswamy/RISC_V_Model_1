@@ -1,7 +1,9 @@
 `timescale 1ns / 1ps
 module IFID (
     output reg [31:0]pco,pc4o,insto,
+    output reg bubbleo,
     input [31:0]pc,pc4,inst,
+    input bubble,
     input clk,rst
 );
     always @(posedge clk, negedge rst) begin
@@ -9,11 +11,13 @@ module IFID (
             pco<=0;
             pc4o<=0;
             insto<=0;
+            bubbleo<=0;
         end
         else begin
             pco<=pc;
             pc4o<=pc4;
             insto<=inst;
+            bubbleo<=bubble;
         end
     end
 endmodule

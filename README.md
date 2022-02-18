@@ -1,9 +1,5 @@
 # RISC-V MicroProcessor
-This repo contains verilog implementation of RISC-V 32-bit architecture based processor. It has 5 pipelined stages.
-
-## Pipelining block diagram
-![RISC-V architecture](/images/RISC-V_architectute_block_diagram.png)
-
+This repo contains verilog implementation of RISC-V 32-bit architecture based processor. It is implemented as Pipelining model and it has 5 pipelined stages.
 
 This has 5 stages in pipelining named 
 
@@ -13,11 +9,17 @@ This has 5 stages in pipelining named
 4. Memory access
 5. Write Back
 
+
+## Pipelining block diagram
+![RISC-V architecture](/images/RISC-V_architectute_block_diagram.png)
+
 ## Instruction Set
-Following Instructions are implemented
+Following Instructions are implemented 
+
+### R32I Base Instruction set:
 
 | Instruction   | Instruction Type  | opcode   | fun3 | fun7     |
-| --------------| -----------       | -------- | ---- | -------- |
+| ------------- | ----------------- | -------- | ---- | -------- |
 | LUI           | U-type            | 0110111  |      |          |
 | AUIPC         | U-type            | 0010111  |      |          |
 | JAL           | UJ-type           | 1101111  |      |          |
@@ -56,10 +58,16 @@ Following Instructions are implemented
 | OR            | R-type            | 0110011  | 110  | 0000000  |
 | AND           | R-type            | 0110011  | 111  | 0000000  |
 
-**Note**: Jump and branch Instructions takes 3 clock cycles to make jump so better to use 3 stalling instructions
-
 
 ## future plans
-- Implement forwarding for avoiding pipelining hazard
-- Implement Muliplication, Division and remainder operations
-- Implement Floating Point operations
+- [x] Implement forwarding for avoiding pipelining hazard
+- [x] Implement stalling
+- [ ] Optimise Muliplication, Division and remainder operations
+- [ ] Implement interrupts
+- [ ] Implement Floating Point operations
+- [ ] Support for Compressed instruction standard
+- [ ] Support for atomic instructions
+- [ ] Implement caching
+- [ ] Make single RAM for instruction and data memory (modified Harvard model)
+- [ ] Optimization
+ 

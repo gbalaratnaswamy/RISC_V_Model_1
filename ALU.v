@@ -19,7 +19,12 @@
     
     not
     arthematic shift left
+    
     */
+
+
+
+
 module ALU (
     output reg [31:0] out,
     input [31:0] a,b,
@@ -27,37 +32,25 @@ module ALU (
     );
     wire [31:0] aout,shout;
     wire lt,eq;
-    reg [1:0] sh_select;
+    wire [1:0] sh_select;
 
-    parameter   Paddition    = 4'b0000, 
-                Psubtraction = 4'b1000,
-                PSLL         = 4'b0001,
-                PSRL         = 4'b0101,
-                PSRA         = 4'b1101,
-                PLT          = 4'b0010,
-                PLTU         = 4'b0011,
-                PEQL         = 4'b1010,
-                PEQU         = 4'b1011,
-                PXOR         = 4'b0100,
-                POR          = 4'b0110,
-                PAND         = 4'b0111,
-                Ppassa       = 4'b1110,
-                Ppassb       = 4'b1111;
+    `include "parameters.vh"
 
+    
     add_sub ad(aout, a,b,select[3]);
 
     shift sh(shout, a,b[4:0],sh_select);
 
     compare cmp(lt,eq,a,b,select[0]);
-    
-    always @(*) begin
-        case (select)
-            PSLL: sh_select<=0;
-            PSRL: sh_select <=2'b10;
-            PSRA: sh_select<= 2'b11;
-            default: sh_select<=0;
-        endcase
-    end
+    assign sh_select ={(select[2]&&select[0]&&(!select[1])),select[3]};  // TODO: test this
+    // always @(*) begin
+    //     case (select)
+    //         PSLL: sh_select<=0;
+    //         PSRL: sh_select <=2'b10;
+    //         PSRA: sh_select<= 2'b11;
+    //         default: sh_select<=0;
+    //     endcase
+    // end
 
     always @(*) begin
         case (select)
@@ -94,7 +87,7 @@ module add_sub (
     );
     wire [31:0] temp;
     assign temp = b^{8{sub}};
-    assign out = a+sub+temp;
+    assign out = a+sub+temp;  // TODO: optimise this
 endmodule
 
 module compare(
@@ -104,8 +97,8 @@ module compare(
     );
     // assign gt = a>b;
     wire [31:0] atemp,btemp;
-    assign atemp = {a[31]^(!unsig),a[30:0]};
-    assign btemp = {b[31]^(!unsig),b[30:0]};
+    assign atemp = {a[31]^(!unsig),a[30:0]^(a[31]&(!unsig))};
+    assign btemp = {b[31]^(!unsig),b[30:0]^(b[31]&(!unsig))};
 
     assign lt = atemp<btemp;
     assign eq = atemp==btemp;
@@ -119,9 +112,10 @@ module shift(
     );
     always @(*)
         case (select)
-            2'b00: out <= a<<b;
-            2'b01: out <= a<<<b;
+            // 2'b00: out <= a<<b;
+            // 2'b01: out <= a<<<b;
             2'b10: out <= a>>b;
             2'b11: out <= a>>>b;
+            default: out <= a<<b;
         endcase
 endmodule
