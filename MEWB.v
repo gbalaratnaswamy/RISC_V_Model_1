@@ -47,7 +47,7 @@ module MEWB (
     input [1:0] regSrc,
     input pcImmtoReg,
     input [4:0] Rd,CP0Rd,
-    input clk,rst
+    input clk,rst,stall
 );
     always @(posedge clk, negedge rst) begin
         if(!rst)begin
@@ -62,15 +62,28 @@ module MEWB (
             CP0Rdo<=0;
         end
         else begin
-            pc4o<=pc4;
-            AluOuto<=AluOut;
-            regesterWo <=regesterW;
-            regSrco <=regSrc;
-            pcImmtoRego<=pcImmtoReg;
-            Rdo<=Rd;
-            PCImmo<=PCImm;
-            Mouto<=Mout;
-            CP0Rdo<=CP0Rd;
+            if(stall) begin
+                pc4o<=pc4o;
+                AluOuto<=AluOuto;
+                regesterWo <=regesterWo;
+                regSrco <=regSrco;
+                pcImmtoRego<=pcImmtoRego;
+                Rdo<=Rdo;
+                PCImmo<=PCImmo;
+                Mouto<=Mouto;
+                CP0Rdo<=CP0Rdo;
+            end else begin
+                pc4o<=pc4;
+                AluOuto<=AluOut;
+                regesterWo <=regesterW;
+                regSrco <=regSrc;
+                pcImmtoRego<=pcImmtoReg;
+                Rdo<=Rd;
+                PCImmo<=PCImm;
+                Mouto<=Mout;
+                CP0Rdo<=CP0Rd;
+            end
+            
         end
     end
 endmodule

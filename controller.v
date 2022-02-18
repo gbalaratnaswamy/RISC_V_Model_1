@@ -247,6 +247,7 @@ module controller (
                 pcImmtoReg=0;
                 jumpSel=0;
                 InstFormat=IFormatR;
+                AluMulSel=0;
             end
             
         endcase 

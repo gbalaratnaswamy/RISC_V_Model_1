@@ -7,7 +7,7 @@ module programCounter (
     input [31:0] AluOut,PCImm,
     input [1:0] jumpSel,
     input jump,
-    input clk,rst);
+    input clk,rst,stall);
 
     `include "parameters.vh"
     
@@ -18,7 +18,9 @@ module programCounter (
             pc<=0;
         end
         else begin
-            if(jump) begin
+            if(stall)begin
+                pc<=pc;
+            end else if(jump) begin
                 case (jumpSel)
                     PJumpPc4: pc<=pc4;
                     PJumpImm: pc<=PCImm;

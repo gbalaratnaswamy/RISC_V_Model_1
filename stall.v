@@ -25,30 +25,30 @@ assign mem_s5st=((regSrcs5==3)||(regSrcs5==1))&&regesterWs5&&(rds5!=0);
             b_IDIE=1;
             b_IEME=0;
             b_MEWB=0;
-            s_IFID=0;
-            s_IDIE=1;
-            s_IEME=1;
-            s_MEWB=1;
+            s_IFID=1;
+            s_IDIE=0;
+            s_IEME=0;
+            s_MEWB=0;
         end
         else if (jumped) begin
             b_IFID=1;
             b_IDIE=1;
             b_IEME=1;
             b_MEWB=0;
-            s_IFID=1;
-            s_IDIE=1;
-            s_IEME=1;
-            s_MEWB=1;
+            s_IFID=0;
+            s_IDIE=0;
+            s_IEME=0;
+            s_MEWB=0;
         end
         else begin
             b_IFID=0;
             b_IDIE=0;
             b_IEME=0;
             b_MEWB=0;
-            s_IFID=1;
-            s_IDIE=1;
-            s_IEME=1;
-            s_MEWB=1;
+            s_IFID=0;
+            s_IDIE=0;
+            s_IEME=0;
+            s_MEWB=0;
         end
     end
 

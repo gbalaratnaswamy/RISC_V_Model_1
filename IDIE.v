@@ -25,7 +25,7 @@ module IDIE (
     input [3:0] aluSelect,
     input [4:0] Rd,Raa,Rba,
     input [1:0] WL, 
-    input clk,rst
+    input clk,rst,stall
 );
     always @(posedge clk, negedge rst) begin
         if(!rst)begin
@@ -54,28 +54,52 @@ module IDIE (
             
         end
         else begin
-            pco<=pc;
-            pc4o<=pc4;
-            immo<=imm;
-            Rao<=Ra;
-            Rbo<=Rb;
-            Raao<=Raa;
-            Rbao<=Rba;
-            fnc3o<=fnc3;
-            // opcodeo<=opcode;
-            regesterWo <=regesterW;
-            regSrco <=regSrc;
-            memReado <=memRead;
-            memWriteo <=memWrite;
-            Alu2opno <=Alu2opn;
-            aluSelecto <=aluSelect;
-            pcImmtoRego<=pcImmtoReg;
-            extendSigno<=extendSign;
-            jumpSelo<=jumpSel;
-            jumpOpno<=jumpOpn;
-            AluMulSelo<=AluMulSel;
-            Rdo<=Rd;
-            WLo<=WL;
+            if(stall) begin
+                pco<=pco;
+                pc4o<=pc4o;
+                immo<=immo;
+                Rao<=Rao;
+                Rbo<=Rbo;
+                Raao<=Raao;
+                Rbao<=Rbao;
+                fnc3o<=fnc3o;
+                regesterWo <=regesterWo;
+                regSrco <=regSrco;
+                memReado <=memReado;
+                memWriteo <=memWriteo;
+                Alu2opno <=Alu2opno;
+                aluSelecto <=aluSelecto;
+                pcImmtoRego<=pcImmtoRego;
+                extendSigno<=extendSigno;
+                jumpSelo<=jumpSelo;
+                jumpOpno<=jumpOpno;
+                AluMulSelo<=AluMulSelo;
+                Rdo<=Rdo;
+                WLo<=WLo;
+            end else begin
+                pco<=pc;
+                pc4o<=pc4;
+                immo<=imm;
+                Rao<=Ra;
+                Rbo<=Rb;
+                Raao<=Raa;
+                Rbao<=Rba;
+                fnc3o<=fnc3;
+                // opcodeo<=opcode;
+                regesterWo <=regesterW;
+                regSrco <=regSrc;
+                memReado <=memRead;
+                memWriteo <=memWrite;
+                Alu2opno <=Alu2opn;
+                aluSelecto <=aluSelect;
+                pcImmtoRego<=pcImmtoReg;
+                extendSigno<=extendSign;
+                jumpSelo<=jumpSel;
+                jumpOpno<=jumpOpn;
+                AluMulSelo<=AluMulSel;
+                Rdo<=Rd;
+                WLo<=WL;
+            end
         end
     end
 endmodule

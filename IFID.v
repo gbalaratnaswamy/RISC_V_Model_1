@@ -4,7 +4,7 @@ module IFID (
     output reg bubbleo,
     input [31:0]pc,pc4,inst,
     input bubble,
-    input clk,rst
+    input clk,rst,stall
 );
     always @(posedge clk, negedge rst) begin
         if(!rst)begin
@@ -14,10 +14,17 @@ module IFID (
             bubbleo<=0;
         end
         else begin
-            pco<=pc;
-            pc4o<=pc4;
-            insto<=inst;
-            bubbleo<=bubble;
+            if(stall)begin
+                pco<=pco;
+                pc4o<=pc4o;
+                insto<=insto;
+                bubbleo<=bubbleo;
+            end else begin
+                pco<=pc;
+                pc4o<=pc4;
+                insto<=inst;
+                bubbleo<=bubble;
+            end
         end
     end
 endmodule
