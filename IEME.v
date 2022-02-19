@@ -5,7 +5,7 @@ module IEME (
     // output reg [6:0] opcodeo,
     output reg regesterWo,
     output reg [1:0] regSrco,
-    output reg memReado,memWriteo,pcImmtoRego,extendSigno,
+    output reg memReado,memWriteo,extendSigno,
     output reg [1:0] jumpSelo,
     output reg jumpOpno,
     output reg [31:0] Rs1o,
@@ -17,7 +17,7 @@ module IEME (
     // input [6:0] opcode,
     input regesterW,
     input [1:0] regSrc,
-    input memRead,memWrite,pcImmtoReg,extendSign,
+    input memRead,memWrite,extendSign,
     input [1:0] jumpSel,
     input jumpOpn,
     input [31:0] Rs1,
@@ -35,7 +35,6 @@ module IEME (
             regSrco <=0;
             memReado <=0;
             memWriteo <=0;
-            pcImmtoRego<=0;
             extendSigno<=0;
             jumpSelo<=0;
             jumpOpno<=0;
@@ -54,7 +53,6 @@ module IEME (
                 regSrco <=regSrco;
                 memReado <=memReado;
                 memWriteo <=memWriteo;
-                pcImmtoRego<=pcImmtoRego;
                 extendSigno<=extendSigno;
                 jumpSelo<=jumpSelo;
                 jumpOpno<=jumpOpno;
@@ -71,7 +69,6 @@ module IEME (
                 regSrco <=regSrc;
                 memReado <=memRead;
                 memWriteo <=memWrite;
-                pcImmtoRego<=pcImmtoReg;
                 extendSigno<=extendSign;
                 jumpSelo<=jumpSel;
                 jumpOpno<=jumpOpn;

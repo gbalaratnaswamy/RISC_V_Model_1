@@ -5,7 +5,7 @@ module IDIE (
     // output reg [6:0] opcodeo,
     output reg regesterWo,
     output reg [1:0] regSrco,
-    output reg memReado,memWriteo,pcImmtoRego,extendSigno,
+    output reg memReado,memWriteo,extendSigno,
     output reg [1:0] jumpSelo,
     output reg jumpOpno,AluMulSelo,
     output reg [1:0] Alu2opno,
@@ -18,7 +18,7 @@ module IDIE (
     // input [6:0] opcode,
     input regesterW,
     input [1:0] regSrc,
-    input memRead,memWrite,pcImmtoReg,extendSign,
+    input memRead,memWrite,extendSign,
     input [1:0] jumpSel,
     input jumpOpn,AluMulSel,
     input [1:0] Alu2opn,
@@ -44,7 +44,6 @@ module IDIE (
             memWriteo <=0;
             Alu2opno <=0;
             aluSelecto <=0;
-            pcImmtoRego<=0;
             extendSigno<=0;
             jumpSelo<=0;
             jumpOpno<=0;
@@ -69,7 +68,6 @@ module IDIE (
                 memWriteo <=memWriteo;
                 Alu2opno <=Alu2opno;
                 aluSelecto <=aluSelecto;
-                pcImmtoRego<=pcImmtoRego;
                 extendSigno<=extendSigno;
                 jumpSelo<=jumpSelo;
                 jumpOpno<=jumpOpno;
@@ -92,7 +90,6 @@ module IDIE (
                 memWriteo <=memWrite;
                 Alu2opno <=Alu2opn;
                 aluSelecto <=aluSelect;
-                pcImmtoRego<=pcImmtoReg;
                 extendSigno<=extendSign;
                 jumpSelo<=jumpSel;
                 jumpOpno<=jumpOpn;

@@ -1,8 +1,6 @@
 `timescale 1ns / 1ps
 
 
-
-
 module decoder (
     output reg [31:0] Imm,
     input [2:0] InstFormat,

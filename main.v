@@ -27,7 +27,7 @@ module processor (
 );
     wire rst;
     assign rst = ~rst_n;
-    wire regesterWs2,memReads2,memWrites2,pcImmtoRegs2,extendSigns2;
+    wire regesterWs2,memReads2,memWrites2,extendSigns2;
     wire [1:0] regSrcs2;
     wire jumps4;
     wire regesterWs5;
@@ -76,7 +76,7 @@ module processor (
     assign Rds2 = insts2[11:7];
     wire [1:0] WLs2;
     wire AluMulSels2;
-    controller cont1(regesterWs2,regSrcs2,memReads2,memWrites2,pcImmtoRegs2,extendSigns2,Alu2opns2,
+    controller cont1(regesterWs2,regSrcs2,memReads2,memWrites2,extendSigns2,Alu2opns2,
         jumpSels2,AluMulSels2,jumpOpns2,aluSelects2,InstFormats2,WLs2,opcodes2,func3s2,func7s2,bubs2);  // stage 2
  
     decoder dec1(Imms2,InstFormats2,insts2,1'b1); // stage 2
@@ -96,9 +96,9 @@ module processor (
     wire b_IDIE,s_IDIE;
 
     IDIE idie1(pcs3,pc4s3,imms3,Ras3,Rbs3,fnc3s3,regesterWs3,regSrcs3,memReads3,memWrites3,
-        pcImmtoRegs3,extendSigns3,jumpSels3,jumpOpns3,AluMulSels3,Alu2opns3,aluSelects3,Rds3,Raas3,Rbas3,WLs3,
+        extendSigns3,jumpSels3,jumpOpns3,AluMulSels3,Alu2opns3,aluSelects3,Rds3,Raas3,Rbas3,WLs3,
         pcs2,pc4s2,Imms2,Ras2,Rbs2,func3s2,{b_IDIE?1'b0:regesterWs2},regSrcs2,{b_IDIE?1'b0:memReads2},{b_IDIE?1'b0:memWrites2},
-        pcImmtoRegs2,extendSigns2,jumpSels2,jumpOpns2,AluMulSels2,Alu2opns2,aluSelects2,Rds2,Raas2,Rbas2,WLs2,clk,rst,s_IDIE); // stage 2-3
+        extendSigns2,jumpSels2,jumpOpns2,AluMulSels2,Alu2opns2,aluSelects2,Rds2,Raas2,Rbas2,WLs2,clk,rst,s_IDIE); // stage 2-3
 
     // stage 3  
 
@@ -121,13 +121,19 @@ module processor (
 
 
     // forwarding
+    wire s_S6,regesterWs6;
+    wire [31:0]AluOuts6;
+    wire [4:0]Rds6;
+    wire [4:0] Rds4;
+    wire regesterWs4;
+    wire [1:0] regSrcs4;
     
     always @(*) begin // TODO: optimise and test 
         if(Rds4==Raas3&&regesterWs4&&(regSrcs4==0)&&(Rds4!=0))begin
             Rafwd=AluOuts4;
         end
-        else if(Rds5==Raas3&&regesterWs5&&(regSrcs5==0)&&(Rds5!=0)) begin
-            Rafwd=AluOuts5;
+        else if(Rds5==Raas3&&regesterWs5&&(Rds5!=0)) begin
+            Rafwd=reg_write_datas5;
         end
         else if(Rds6==Raas3&&regesterWs6&&(Rds6!=0)) begin
             Rafwd=AluOuts6;
@@ -141,8 +147,8 @@ module processor (
         if(Rds4==Rbas3&&regesterWs4&&(regSrcs4==0)&&(Rds4!=0))begin
             Rs2s3=AluOuts4;
         end
-        else if(Rds5==Rbas3&&regesterWs5&&(regSrcs5==0)&&(Rds5!=0)) begin
-            Rs2s3=AluOuts5;
+        else if(Rds5==Rbas3&&regesterWs5&&(Rds5!=0)) begin
+            Rs2s3=reg_write_datas5;
         end
         else if(Rds6==Rbas3&&regesterWs6&&(Rds6!=0)) begin
             Rs2s3=AluOuts6;
@@ -158,34 +164,25 @@ module processor (
             PAluPC: Alubs3=pcs3;
             default: begin
                 Alubs3=Rs2s3;
-                // if(Rds4==Rbas3&&regesterWs4&&(regSrcs4==0)&&(Rds4!=0))begin
-                //     Alubs3=AluOuts4;
-                // end
-                // else if(Rds5==Rbas3&&regesterWs5&&(regSrcs5==0)&&(Rds5!=0)) begin
-                //     Alubs3=AluOuts5;
-                // end
-                // else begin
-                //     Alubs3=Rbs3;
-                // end
             end
         endcase
     end
 
     wire [31:0] pc4s4;
     wire [2:0] fnc3s4;
-    wire regesterWs4,memReads4,memWrites4,pcImmtoRegs4,extendSigns4;
+    wire memReads4,memWrites4,extendSigns4;
 
-    wire [1:0] WLs4,regSrcs4;
+    wire [1:0] WLs4;
     wire [31:0] Rs2s4;
-    wire [4:0] Rds4;
+    
 
 
     //bubble and stall
     wire b_IEME,s_IEME;
 
     IEME ieme(pc4s4,AluOuts4,PCImms4,fnc3s4,regesterWs4,regSrcs4,memReads4,memWrites4,
-    pcImmtoRegs4,extendSigns4,jumpSels4,jumpOpns4,Rs2s4,Rds4,WLs4,
-    pc4s3,AluOuts3,PCImms3,fnc3s3,{b_IEME?1'b0:regesterWs3},regSrcs3,{b_IEME?1'b0:memReads3},{b_IEME?1'b0:memWrites3},pcImmtoRegs3,
+    extendSigns4,jumpSels4,jumpOpns4,Rs2s4,Rds4,WLs4,
+    pc4s3,AluOuts3,PCImms3,fnc3s3,{b_IEME?1'b0:regesterWs3},regSrcs3,{b_IEME?1'b0:memReads3},{b_IEME?1'b0:memWrites3},
     extendSigns3,jumpSels3,jumpOpns3,Rs2s3,Rds3,WLs3,clk,rst,s_IEME);
 
     // stage 4
@@ -193,25 +190,17 @@ module processor (
     Memory mem1(clk,AluOuts4,Rs2s4,memWrites4,memReads4,extendSigns4,
     WLs4,Mouts4,ioout,ioin); 
     
-    assign jumps4 = (jumpOpns4)||(AluOuts4[0]^fnc3s4[0]); // TODO: test this modification needed triggers but not problem
-    // always @(*) begin 
-    //     case (opcodes4)
-    //         InstJAL: jumps4<=1;
-    //         InstJALR: jumps4<=1;
-    //         InstBranch: jumps4<=(AluOuts4[0]^fnc3s4[0]);
-    //         default: jumps4<=0;
-    //     endcase
-    // end
+    assign jumps4 = (jumpOpns4)||(AluOuts4[0]^fnc3s4[0]); 
+ 
 
     wire [31:0]pc4s5,AluOuts5,PCImms5,Mouts5,CP0outs5;
     wire [1:0] regSrcs5;
-    wire pcImmtoRegs5;
 
     //bubble and stall
     wire b_MEWB,s_MEWB;
 
-    MEWB mewb1(pc4s5,AluOuts5,PCImms5,Mouts5,regesterWs5,regSrcs5,pcImmtoRegs5,Rds5,CP0rdouts5,
-    pc4s4,AluOuts4,PCImms4,Mouts4,{b_MEWB?1'b0:regesterWs4},regSrcs4,pcImmtoRegs4,Rds4,CP0rdouts3,clk,rst,s_MEWB);
+    MEWB mewb1(pc4s5,AluOuts5,PCImms5,Mouts5,regesterWs5,regSrcs5,Rds5,CP0rdouts5,
+    pc4s4,AluOuts4,PCImms4,Mouts4,{b_MEWB?1'b0:regesterWs4},regSrcs4,Rds4,CP0rdouts3,clk,rst,s_MEWB);
 
     // stage 5
 
@@ -227,7 +216,7 @@ module processor (
         else if (regSrcs5==3) begin
             reg_write_datas5=pc4s5;
         end
-        else if (pcImmtoRegs4) begin
+        else if (regSrcs5==2) begin
             reg_write_datas5=PCImms5;
         end
         else begin
@@ -238,10 +227,8 @@ module processor (
     // stage 6 virtual used only for fully forwarded alu operation
 
     // stall
-    wire s_S6,regesterWs6;
-    wire [31:0]AluOuts6;
-    wire [4:0]Rds6;
-    s6_Forward fwds6( AluOuts6,Rds6,regesterWs6,AluOuts5,Rds5,{(regSrcs5==0)&&regesterWs5},clk,rst,s_S6);
+    
+    s6_Forward fwds6( AluOuts6,Rds6,regesterWs6,reg_write_datas5,Rds5,regesterWs5,clk,rst,s_S6);
 
 
     // stall control

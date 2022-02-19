@@ -11,16 +11,17 @@ module stall_Bpred(
     input jumps4,
     input [1:0] jumpSels4
 );
+`include "parameters.vh"
 wire jumped;
 assign jumped = jumps4&&(jumpSels4!=PJumpPc4);
 wire mem_s3st,mem_s4st,mem_s5st;
-assign mem_s3st=((regSrcs3==3)||(regSrcs3==1))&&regesterWs3&&(rds3!=0);
-assign mem_s4st=((regSrcs4==3)||(regSrcs4==1))&&regesterWs4&&(rds4!=0);
-assign mem_s5st=((regSrcs5==3)||(regSrcs5==1))&&regesterWs5&&(rds5!=0);
+assign mem_s3st=((regSrcs3==3)||(regSrcs3==1))&&regesterWs3&&(rds3!=0);  // TODO: optimise this
+// assign mem_s4st=((regSrcs4==3)||(regSrcs4==1))&&regesterWs4&&(rds4!=0);
+// assign mem_s5st=((regSrcs5==3)||(regSrcs5==1))&&regesterWs5&&(rds5!=0);
 
-`include "parameters.vh"
+
     always @(*) begin
-        if((!jumped)&&(mem_s3st||mem_s4st||mem_s5st))begin
+        if((!jumped)&&(mem_s3st))begin
             b_IFID=0;
             b_IDIE=1;
             b_IEME=0;
