@@ -1,46 +1,38 @@
 `timescale 1ns / 1ps
 
 module MEWB (
-    output reg [31:0] pc4o,AluOuto,PCImmo,Mouto,
+    output reg [31:0] reg_write_data_halfo,Mouto,
     output reg regesterWo,
     output reg [1:0] regSrco,
-    output reg [4:0] Rdo,CP0Rdo,
-    input [31:0] pc4,AluOut,PCImm,Mout,
+    output reg [4:0] Rdo,
+    input [31:0] reg_write_data_half,Mout,
     input regesterW,
     input [1:0] regSrc,
-    input [4:0] Rd,CP0Rd,
+    input [4:0] Rd,
     input clk,rst,stall
 );
     always @(posedge clk, negedge rst) begin
         if(!rst)begin
-            pc4o<=0;
-            AluOuto<=0;
+            reg_write_data_halfo<=0;
             regesterWo <=0;
             regSrco <=0;
             Rdo<=0;
-            PCImmo<=0;
             Mouto<=0;
-            CP0Rdo<=0;
         end
         else begin
             if(stall) begin
-                pc4o<=pc4o;
-                AluOuto<=AluOuto;
+                reg_write_data_halfo <= reg_write_data_halfo;
                 regesterWo <=regesterWo;
                 regSrco <=regSrco;
                 Rdo<=Rdo;
-                PCImmo<=PCImmo;
                 Mouto<=Mouto;
-                CP0Rdo<=CP0Rdo;
+
             end else begin
-                pc4o<=pc4;
-                AluOuto<=AluOut;
+                reg_write_data_halfo<=reg_write_data_half;
                 regesterWo <=regesterW;
                 regSrco <=regSrc;
                 Rdo<=Rd;
-                PCImmo<=PCImm;
                 Mouto<=Mout;
-                CP0Rdo<=CP0Rd;
             end
             
         end

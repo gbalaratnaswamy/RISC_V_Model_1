@@ -8,7 +8,13 @@ notes.txt
 cp0.v.txt
 instr2.txt
 cons.v
+t_main2.v
+compressedStandard.v
 
 *.vcd
 *.out
+*.bin
+*.prm
+*.txt
+
 

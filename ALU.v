@@ -86,7 +86,7 @@ module add_sub (
     input sub
     );
     wire [31:0] temp;
-    assign temp = b^{8{sub}};
+    assign temp = b^{32{sub}};
     assign out = a+sub+temp;  // TODO: optimise this
 endmodule
 

@@ -7,7 +7,8 @@ module controller (
     output reg memRead,memWrite,
     output extendSign,
     output reg [1:0] Alu2opn,jumpSel,
-    output reg AluMulSel,jumpOpn,
+    output reg AluMulSel,
+    output jumpOpn,
     output reg [3:0] aluSelect,
     output reg [2:0] InstFormat,
     output [1:0] WL,
@@ -159,7 +160,7 @@ module controller (
                 memWrite=0;
                 jumpSel=0;
                 InstFormat=IFormatR;
-                AluMulSel=(func7==7'b0000001);
+                AluMulSel=func7[0];
             end
 
             default: begin regesterW=0;
@@ -174,11 +175,11 @@ module controller (
         endcase 
     end
 
-    always @(*) begin
-        case (opcode)
-            InstJAL: jumpOpn=1;
-            InstJALR: jumpOpn=1;
-            default: jumpOpn=0;
-        endcase
-    end
+    assign jumpOpn = opcode==7'b110x111;
+    // always @(*) begin
+    //     case (opcode)
+    //         InstJAL,InstJALR: jumpOpn=1;
+    //         default: jumpOpn=0;
+    //     endcase
+    // end
 endmodule
