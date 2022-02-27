@@ -67,7 +67,7 @@ module processor (
 
     wire [2:0] fnc3s4;
     wire cp0ok,b_CP0;
-    // wire [31:0] CP0outs3,CP0outs4;
+    wire [31:0] CP0outs3,CP0outs4;
 
 
     assign rst = ~rst_n;
@@ -112,7 +112,7 @@ module processor (
 
     ALU alu1(AluOuts3,Rafwd,Alubs3,aluSelects3);  // stage 3
 
-    //cop0 cp0 (CP0outs3,cp0ok,Rafwd,Alubs3,fnc3s3,{b_CP0?1'b0:AluMulSels3},clk,rst); // TODO: implemet bubble
+    cop0 cp0 (CP0outs3,cp0ok,Rafwd,Alubs3,fnc3s3,{b_CP0?1'b0:AluMulSels3},clk,rst); // TODO: implemet bubble
     `include "parameters.vh"
 
     // Data forwarding unit

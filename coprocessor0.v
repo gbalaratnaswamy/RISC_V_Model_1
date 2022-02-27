@@ -19,7 +19,7 @@ module cop0 (
     always @(posedge clk) begin
         prevOk=ok;
     end
-    // multiplier m1(mulans,a,b,sig_a,sig_b);
+    multiplier m1(mulans,a,b,sig_a,sig_b);
 
     wire [31:0] D,R;
     
@@ -91,7 +91,7 @@ module cop0 (
     // assign b_neg = b[31]&&sig_b;
     // assign b_u   = b^({31{b_neg}})+b_neg;
 
-    // Divide d1(clk,rst,stall,a,b,D,R,ok,err);  
+    Divide d1(clk,rst,stall,a,b,D,R,ok,err);  
    
 endmodule
 

@@ -10,7 +10,8 @@ instr2.txt
 cons.v
 t_main2.v
 compressedStandard.v
-
+ip/
+ip/*
 *.vcd
 *.out
 *.bin
