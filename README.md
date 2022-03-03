@@ -11,7 +11,8 @@ This has 5 stages in pipelining named
 
 
 ## Pipelining block diagram
-![RISC-V architecture](/images/RISC-V_architectute_block_diagram.png)
+<!-- ![RISC-V architecture](/images/RISC-V_architectute_block_diagram.png) -->
+![RISC-V architecture](/images/RISC_V_Stages.png)
 
 ## Instruction Set
 Following Instructions are implemented 
@@ -58,11 +59,23 @@ Following Instructions are implemented
 | OR            | R-type            | 0110011  | 110  | 0000000  |
 | AND           | R-type            | 0110011  | 111  | 0000000  |
 
+### M Standard Extension
+| Instruction   | Instruction Type  | opcode   | fun3 | fun7     |
+| ------------- | ----------------- | -------- | ---- | -------- |
+| MUL           | R-type            | 0110011  | 000  | 0000001  |
+| MULH          | R-type            | 0110011  | 001  | 0000001  |
+| MULHSU        | R-type            | 0110011  | 010  | 0000001  |
+| MULHU         | R-type            | 0110011  | 011  | 0000001  |
+| DIV           | R-type            | 0110011  | 100  | 0000001  |
+| DIVU          | R-type            | 0110011  | 101  | 0000001  |
+| REM           | R-type            | 0110011  | 110  | 0000001  |
+| REMU          | R-type            | 0110011  | 111  | 0000001  |
 
 ## future plans
 - [x] Implement forwarding for avoiding pipelining hazard
 - [x] Implement stalling
 - [ ] Optimise Muliplication, Division and remainder operations
+- [ ] Add CSR and its instructions
 - [ ] Implement interrupts
 - [ ] Implement Floating Point operations
 - [ ] Support for Compressed instruction standard

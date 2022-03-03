@@ -11,6 +11,7 @@ cons.v
 t_main2.v
 compressedStandard.v
 ip/
+design_1/
 ip/*
 *.vcd
 *.out
